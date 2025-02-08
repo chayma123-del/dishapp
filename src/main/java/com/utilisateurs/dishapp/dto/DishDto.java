@@ -15,11 +15,11 @@ public class DishDto {
     private Boolean active;
 
     public DishDto(String name, String description, Double price, Boolean active, String imagePath) {
-    this.name = name;
-    this.description = description;
-    this.price = price;
-    this.active = active;
-    this.imagePath = imagePath;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.active = active;
+        this.imagePath = imagePath;
 
     }
 

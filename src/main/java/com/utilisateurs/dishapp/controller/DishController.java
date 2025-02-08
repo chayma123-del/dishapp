@@ -1,12 +1,23 @@
 package com.utilisateurs.dishapp.controller;
+
 import com.utilisateurs.dishapp.dto.DishDto;
 import com.utilisateurs.dishapp.entity.Dish;
 import com.utilisateurs.dishapp.service.DishService;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+
 @RestController
 
 @RequestMapping("/api/dishes")
@@ -19,10 +30,6 @@ public class DishController {
         this.dishService = dishService;
     }
 
-    @PostMapping
-    public ResponseEntity<DishDto> createDish(@ModelAttribute DishDto dishDto) {
-        return ResponseEntity.ok(dishService.createDish(dishDto));
-    }
 
     @GetMapping
     public ResponseEntity<List<Dish>> getAllDishes() {
@@ -45,4 +52,5 @@ public class DishController {
         dishService.deleteDish(id);
         return ResponseEntity.noContent().build();
     }
+
 }

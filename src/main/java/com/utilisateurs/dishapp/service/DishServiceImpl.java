@@ -10,9 +10,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DishServiceImpl implements DishService {
@@ -27,9 +29,9 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
-    public DishDto createDish(DishDto dishDto) {
-        String imagePath = saveImage(dishDto.getImage());
-
+    public DishDto createDish(DishDto dishDto, MultipartFile image) {
+        String imagePath = saveImage(image); // Sauvegarde de l'image
+        dishDto.setImagePath(imagePath); // Mise à jour de l'image dans le DTO
 
         Dish dish = new Dish();
         dish.setName(dishDto.getName());
@@ -40,13 +42,10 @@ public class DishServiceImpl implements DishService {
         dish.setActive(dishDto.getActive());
 
         Dish dishSaved = dishRepository.save(dish);
-        System.out.println("Dish enregistré: " + dishSaved.getImagePath());
 
-
-        DishDto dto = convertToDto(dishSaved);
-        System.out.println("DTO retourné: " + dto);
-        return dto;
+        return convertToDto(dishSaved);
     }
+
 
     private DishDto convertToDto(Dish dish) {
         return new DishDto(
@@ -90,6 +89,8 @@ public class DishServiceImpl implements DishService {
         dishRepository.deleteById(id);
     }
 
+
+
     // Méthode pour sauvegarder une image et retourner son chemin
     private String saveImage(MultipartFile image) {
         if (image == null || image.isEmpty()) {
@@ -103,5 +104,7 @@ public class DishServiceImpl implements DishService {
             throw new RuntimeException("Failed to save image", e);
         }
     }
-}
+
+
+    }
 
